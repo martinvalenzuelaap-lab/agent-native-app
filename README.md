@@ -4,9 +4,54 @@
 
 Agent-native App Architecture is an emerging application pattern: apps expose deterministic state, tools, events, and UI, while delegating AI decision-making to the user's **personal agent** instead of embedding isolated assistants inside every app.
 
+## Origin story
+
+This pattern came from running a real personal agent environment with multiple self-hosted services: entry pages, file browsers, office-style UIs, health dashboards, and personal quest systems.
+
+The first version was messy: service runtime data, app databases, generated files, uploads, caches, and agent context all lived too close to the agent home directory. The agent workspace became a dumping ground.
+
+The fix was to make each service its own Dockerized app with its own runtime boundary:
+
+```text
+agent-home/
+  skills/
+  config.yaml
+  memories/
+
+services/
+  app-a/
+    compose.yaml
+    data/
+  app-b/
+    compose.yaml
+    data/
+```
+
+That solved runtime cleanliness, but exposed another problem: some apps need AI reasoning to work well. Embedding a separate agent lifecycle inside every app would duplicate memory, prompts, permissions, scheduling, and governance.
+
+The cleaner boundary is:
+
+```text
+App: state, UI, API, validation, MCP tools, events, runtime data
+Personal Agent: user context, reasoning, planning, AI decisions, cross-app orchestration
+```
+
+A third option was to use existing SaaS products and write Skills for the agent. That works when the SaaS already matches the workflow, but it breaks down when the app needs custom data, custom UI, custom AI decision points, or future extensibility.
+
+Agent-native Apps are the middle path:
+
+- app data stays inside each service boundary
+- the agent home stays clean
+- the app does not embed a hardcoded agent lifecycle
+- the app exposes API/MCP/Skill/manifest surfaces
+- the user's personal agent provides the AI runtime
+- the same app can be used by Hermes Agent, Claude Code, Codex, or other MCP-capable agents
+
+See [`docs/motivation.md`](docs/motivation.md) and [`docs/agent-portability.md`](docs/agent-portability.md) for the expanded version.
+
 ## Working definition
 
-An **Agent-native App** is an application designed to be understood, operated, and extended by a user's personal agent.
+An **Agent-native App** is an application designed to be understood, operated, and extended by a user's personal agent, without depending on one specific agent implementation.
 
 The app owns the reliable system parts:
 
@@ -17,6 +62,7 @@ The app owns the reliable system parts:
 - MCP tools/resources
 - events and webhooks
 - deployment and operations contract
+- runtime data inside the app boundary
 
 The user's personal agent owns the AI parts:
 
@@ -38,26 +84,9 @@ Agent-native App Architecture is **not**:
 - a new LLM runtime
 - a new agent framework
 - a requirement that every app must ship its own agent
+- a Hermes-only app convention
 
 It is a packaging and integration pattern for making apps usable by personal agents.
-
-It should also avoid depending on one specific agent implementation. Hermes Agent may be one consumer, but the same app should be usable by Claude Code, Codex, Cursor-style agents, custom MCP clients, or future personal agent runtimes.
-
-See [`docs/agent-portability.md`](docs/agent-portability.md).
-
-## Motivation
-
-This pattern came from running a personal agent environment with multiple self-hosted services: entry pages, file browsers, office-style UIs, health dashboards, and personal quest systems.
-
-Three practical problems appeared:
-
-1. Service runtime data inside the agent home made the agent directory messy.
-2. Some services needed AI reasoning, but embedding a separate agent lifecycle into each app would duplicate memory, prompts, permissions, and governance.
-3. Using SaaS + Skill was useful, but too dependent on SaaS-specific models and not flexible enough for custom workflows.
-
-Agent-native Apps are the middle path: each service owns its runtime, data, UI, API, and deterministic rules; the personal agent owns AI reasoning and user context. The agent home stays clean, and the app remains portable across agents.
-
-See [`docs/motivation.md`](docs/motivation.md).
 
 ## Why it matters
 
