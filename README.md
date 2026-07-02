@@ -93,10 +93,10 @@ Personal Agent：user context / reasoning / planning / AI decisions / cross-app 
 這些服務不用在這份筆記裡展開成完整案例，但可以作為脈絡：
 
 - **入口頁**：把多個自架服務整理成一個人類可點的入口。
-- **File Browser**：檔案瀏覽與管理服務，重點是服務資料與 agent home 分離。
-- **Mochi Office**：偏人類 UI / 工作台的實驗，說明 App 可以有自己的互動介面。
-- **S400 健康儀表板**：健康資料儀表板，代表 App 保存與呈現自己的 domain data。
-- **Mochi Quest**：最接近完整範例，包含 Docker runtime、API、DB、UI、MCP server、`SKILL.md`。Repo: <https://github.com/ATaiIsHere/mochi-quest>
+- **File Browser**：Hermes Agent 目錄的 File Browser，讓人可以直接瀏覽與管理 agent home。
+- **Mochi Office**：Hermes Agent profile 的視覺化介面。
+- **S400 健康儀表板**：自動同步體脂計資料，並讓 Agent 可以讀取我的健康資料。
+- **Mochi Quest**：將個人目標化為可實踐的任務，是最接近完整範例的服務。Repo: <https://github.com/ATaiIsHere/mochi-quest>
 
 ---
 
@@ -218,10 +218,10 @@ Each service runs independently, usually as a Dockerized app. App data stays ins
 These services do not need to become full case studies in this note, but they provide the background:
 
 - **Entry page**: a human-facing entry point for multiple self-hosted services.
-- **File Browser**: file browsing and management, with service data separated from the agent home.
-- **Mochi Office**: a human UI / workspace experiment, showing that the app can own its own interface.
-- **S400 health dashboard**: a health-data dashboard where the app owns and presents its own domain data.
-- **Mochi Quest**: the closest complete example, with Docker runtime, API, DB, UI, MCP server, and `SKILL.md`. Repo: <https://github.com/ATaiIsHere/mochi-quest>
+- **File Browser**: a File Browser for the Hermes Agent directory, so the agent home can be browsed and managed directly.
+- **Mochi Office**: a visual interface for Hermes Agent profiles.
+- **S400 health dashboard**: automatically syncs body scale data and lets the Agent read my health data.
+- **Mochi Quest**: turns personal goals into actionable tasks, and is the closest complete example. Repo: <https://github.com/ATaiIsHere/mochi-quest>
 
 ---
 
