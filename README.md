@@ -9,19 +9,35 @@ Language / 語言： [繁體中文](#繁體中文) | [English](#english)
 ## Architecture at a glance / 架構圖
 
 ```mermaid
-flowchart TD
-  U[User] --> PA[Personal Agent<br/>Hermes / Claude Code / Codex]
-  PA --> CTX[User Context<br/>memory / preferences / goals]
-  PA --> AI[AI Reasoning<br/>planning / review / decisions]
-  PA <--> API[Agent Interface<br/>MCP tools / API / events]
+flowchart LR
+  U[User]
 
-  subgraph APP[Agent-native App]
-    API --> STATE[App State & Rules<br/>DB / validation / business rules]
-    STATE --> UI[Human UI]
-    STATE --> RUN[App Runtime<br/>Docker / server / workers]
-    SKILL[Agent Instructions<br/>SKILL.md / AI decision rules] -. guides .-> PA
-    OPS[Operations Notes<br/>README / healthcheck / backup] -. maintains .-> RUN
+  subgraph AGENT[User's Personal Agent Environment]
+    PA[Personal Agent<br/>Hermes / Claude Code / Codex]
+    CTX[User Context<br/>memory / preferences / goals]
+    AI[AI Reasoning<br/>planning / review / decisions]
+    SKILL[Installed Skill.md<br/>when / how to use the app]
+    PA --> CTX
+    PA --> AI
+    SKILL -. guides .-> PA
   end
+
+  subgraph APP[Agent-native App / Service Boundary]
+    API[Agent Interface<br/>MCP tools / API / events]
+    STATE[App State & Rules<br/>DB / validation / business rules]
+    UI[Human UI]
+    RUN[App Runtime<br/>Docker / server / workers]
+    OPS[Operations Notes<br/>README / healthcheck / backup]
+    API --> STATE
+    STATE --> UI
+    RUN --> API
+    RUN --> STATE
+    OPS -. maintains .-> RUN
+  end
+
+  U --> PA
+  U --> UI
+  PA <--> API
 ```
 
 ```text
