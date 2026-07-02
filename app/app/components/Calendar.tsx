@@ -1,0 +1,30 @@
+"use client";
+
+interface CalendarProps {
+  selectedDate: string;
+  onSelectDate: (date: string) => void;
+  availableDates: string[];
+}
+
+export default function Calendar({ selectedDate, onSelectDate, availableDates }: CalendarProps) {
+  return (
+    <div style={{ display: "flex", gap: "8px", marginBottom: "24px" }}>
+      {availableDates.map((date) => (
+        <button
+          key={date}
+          onClick={() => onSelectDate(date)}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            border: date === selectedDate ? "2px solid #333" : "1px solid #ccc",
+            background: date === selectedDate ? "#333" : "#fff",
+            color: date === selectedDate ? "#fff" : "#333",
+            cursor: "pointer",
+          }}
+        >
+          {new Date(date).toLocaleDateString("es-CL", { weekday: "short", day: "numeric" })}
+        </button>
+      ))}
+    </div>
+  );
+}
